@@ -18,7 +18,7 @@ function SchedulePage() {
   // Handle form submission to create a new schedule
   async function onSubmit(data: any) {
     try {
-      const response = await fetch('http://localhost:8080/api/schedules/create', {
+      const response = await fetch('/api/schedules/create', {
         method: 'POST',
         headers: {
           'Accept': 'application/json',
@@ -33,11 +33,12 @@ function SchedulePage() {
           time_Scheduled: data.time
         })
       });
-      const result = await response.json();
+      const contentType = response.headers.get('content-type') || '';
+      const result = contentType.includes('application/json') ? await response.json() : null;
       if (response.ok) {
         alert(`Schedule created successfully!\nFirst Name: ${data.firstname}\nLast Name: ${data.lastname}\nEmail: ${data.email}\nPhone: ${data.phone}\nDate: ${data.date}\nTime: ${data.time}`);
       } else {
-        alert(`Error: ${result.message || 'Failed to create schedule'}`);
+        alert(`Error: ${result?.message || 'Failed to create schedule'}`);
       }
     } catch (error: any) {
       alert(`Network error: ${error.message}`);
