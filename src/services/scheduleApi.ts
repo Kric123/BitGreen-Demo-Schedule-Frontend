@@ -1,7 +1,7 @@
 // src/services/scheduleApi.ts
 //add your API service link here, for example: http://localhost:8080/api or https://myapi.com/api must have /api at the end
-const rawApiUrl = import.meta.env.VITE_API_URL || 'https://bgbackenddemo-env.eba-pucdzufm.us-east-1.elasticbeanstalk.com/api';
-const API_BASE_URL = rawApiUrl.replace(/^http:\/\//i, 'https://');
+// For Netlify, we recommend proxying via /api and keeping the frontend origin HTTPS.
+const API_BASE_URL = import.meta.env.VITE_API_URL || '/api';
 
 export interface ScheduleData {
   id: number;
