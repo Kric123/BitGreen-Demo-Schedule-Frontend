@@ -37,12 +37,19 @@ class ScheduleApiService {
 
     try {
       const response = await fetch(url, config);
-      const result = await response.json();
-
+      const contentType = response.headers.get('content-type') || '';
+      
       if (!response.ok) {
-        throw new Error(result.message || `HTTP ${response.status}`);
+        const errorText = await response.text();
+        throw new Error(errorText || `HTTP ${response.status}`);
       }
 
+      // Handle empty responses (204 No Content, etc.)
+      if (response.status === 204 || !contentType.includes('application/json')) {
+        return undefined as T;
+      }
+
+      const result = await response.json();
       return result;
     } catch (error) {
       console.error('API Error:', error);
